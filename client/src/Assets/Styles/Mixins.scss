@@ -1,0 +1,45 @@
+@function generate-breakpoint-width($size, $grids) {
+  $symbol: "%";
+  @return #{round($size / $grids * 10e7) / 10e5}#{$symbol};
+}
+
+@mixin generateWidth($size, $grids) {
+  width: #{generate-breakpoint-width($size, $grids)}
+}
+
+@mixin generateBreakpointClasses($screenSize, $grids) {
+  @for $i from 1 through $grids {
+    .col-#{$screenSize}-#{$i} {
+      width: #{generate-breakpoint-width($i, $grids)};
+    }
+    .col-offset-#{$screenSize}-#{$i} {
+      margin-left: #{generate-breakpoint-width($i, $grids)};
+    }
+  }
+}
+
+$baseSize: 16px; //16px is font size for most browsers
+
+//Rem Conversion
+@function calculateRem($size) {
+  $remSize: $size / $baseSize;
+  @return #{$remSize}rem;
+}
+
+@mixin convertPxToRem($size) {
+  font-size: $size; //Fallback in px
+  font-size: calculateRem($size);
+}
+
+@mixin textEllipsis() {
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+@mixin lineClamp($numberOfLines) {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: $numberOfLines;
+  overflow: hidden;
+}
