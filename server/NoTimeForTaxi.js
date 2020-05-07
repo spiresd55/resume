@@ -72,9 +72,12 @@ class Coordinate {
     }
 }
 
+//This BinaryHeap supports both min and max priority queues
+//TODO: Make this support objects
 class BinaryHeap {
-    constructor() {
+    constructor(type) {
         this.items = [0];
+        this.type = type;
     }
 
     length() {
@@ -86,7 +89,7 @@ class BinaryHeap {
         this.percolateUp();
     }
 
-    delMin() {
+    del() {
         //Delete the top of the list
         const item = this.items[1];
 
@@ -97,21 +100,42 @@ class BinaryHeap {
         this.items.pop();
 
         //Percolate the large root down the data structure
-        this.percolateDown();
+        this.percolateDown(1);
 
         return item;
     }
 
     isEmpty() {
-
-    }
-
-    size() {
-
+        this.length() === 0;
     }
 
     buildHeap(list) {
+        //This function currently doesn't support existing lists
+        if (this.length() > 1) {
+            return;
+        }
 
+        this.items = [0, ...list];
+        let i = Math.floor(this.length() / 2 );
+        while (i > 0) {
+            this.percolateDown(i);
+            i = i - 1;
+        }
+    }
+
+    //TODO:make private
+    shouldSwap(node, node2) {
+        if(this.type === "min") {
+          if(node < node2) {
+              return true;
+          }
+        } else {
+            if (node > node2) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     //TODO: Make private
@@ -119,7 +143,7 @@ class BinaryHeap {
         let i = this.length();
         while (Math.floor(i / 2 ) > 0) {
             const parentIndex = Math.floor(i /2 );
-            if (this.items[i] < this.items[parentIndex]) {
+            if (this.shouldSwap(this.items[i], this.items[parentIndex])) {
                 const temp = this.items[i];
                 this.items[i] = this.items[parentIndex];
                 this.items[parentIndex] = temp;
@@ -129,13 +153,13 @@ class BinaryHeap {
     }
 
     //TODO: Make Private
-    percolateDown() {
-        let i = 1;
-
+    percolateDown(index) {
+        let i = index;
+        console.log("pd", i);
         while (i * 2 <= this.length()) {
             let mc = this.minChild(i);
 
-            if (this.items[i] > this.items[mc]) {
+            if (this.shouldSwap(this.items[mc], this.items[i])) {
                 const temp = this.items[i];
                 this.items[i] = this.items[mc];
                 this.items[mc] = temp;
@@ -150,7 +174,7 @@ class BinaryHeap {
             return index * 2;
         }
 
-        if (this.items[index * 2] < this.items[index * 2 + 1]) {
+        if (this.shouldSwap(this.items[index * 2], this.items[index * 2 + 1])) {
             return index * 2;
         }
 
@@ -203,28 +227,41 @@ const results = calculateOriginalPath(new Coordinate(3,5), ["R3", "L3", "L3", "R
 console.log(results);
 
 
-console.log("TESTING HEAP");
-const pQueue = new BinaryHeap();
-pQueue.insert(3);
+//console.log("TESTING HEAP");
+//const pQueue = new BinaryHeap("min");
+//pQueue.insert(3);
 //console.log(pQueue);
-pQueue.insert(5);
+//pQueue.insert(5);
 //console.log(pQueue);
-pQueue.insert(10);
+//pQueue.insert(10);
 //console.log(pQueue);
-pQueue.insert(4);
+//pQueue.insert(4);
 //console.log(pQueue);
 
 //console.log(pQueue.delMin())
 //console.log(pQueue);
-console.log(pQueue.minChild(3));
+//console.log(pQueue.minChild(3));
 
-console.log(pQueue);
+//console.log(pQueue);
 
-console.log(pQueue.delMin());
-console.log(pQueue);
-console.log(pQueue.delMin());
-console.log(pQueue);
-console.log(pQueue.delMin());
-console.log(pQueue)
+//console.log(pQueue.delMin());
+//console.log(pQueue);
+//console.log(pQueue.delMin());
+//console.log(pQueue);
+//console.log(pQueue.delMin());
+//console.log(pQueue)
 
+const pQueue2 = new BinaryHeap("max");
+//pQueue2.insert(20);
+//pQueue2.insert(30);
+pQueue2.buildHeap([11,3,4,5,100,2,6,8,9]);
+/*console.log(pQueue2.delMin());
+console.log(pQueue2.delMin());
+console.log(pQueue2.delMin());
+console.log(pQueue2.delMin());
+console.log(pQueue2.delMin());
+console.log(pQueue2.delMin());
+console.log(pQueue2.delMin());
+console.log(pQueue2.delMin());*/
+console.log(pQueue2);
 
