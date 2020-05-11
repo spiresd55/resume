@@ -53,22 +53,22 @@ class Bot {
     }
 
     giveChips(bot1,bot2) {
-        //All the below comments were used for debugging purposes
-        //const [lowChip, highChip] = this.chips;
+        // All the below comments were used for debugging purposes
+        // const [lowChip, highChip] = this.chips;
 
-        //console.log(`Bot${this.botNumber} has chips ${lowChip.value} ${highChip.value}`);
+        // console.log(`Bot${this.botNumber} has chips ${lowChip.value} ${highChip.value}`);
 
         if(bot1 && bot1.isFull()) {
             this.chips.shift();
             bot2.getChip(this.chips.shift());
-            //console.log(`Bot${this.botNumber} giving chip-${lowChip.value} to output`);
-            //console.log(`Bot${this.botNumber} giving chip-${highChip.value} to bot${bot1.botNumber}`);
+            // console.log(`Bot${this.botNumber} giving chip-${lowChip.value} to output`);
+            // console.log(`Bot${this.botNumber} giving chip-${highChip.value} to bot${bot1.botNumber}`);
         } else {
             bot1 && bot1.getChip(this.chips.shift());
-            //console.log(`Bot${this.botNumber} giving chip-${lowChip.value} to bot${bot1.botNumber}`);
+            // console.log(`Bot${this.botNumber} giving chip-${lowChip.value} to bot${bot1.botNumber}`);
 
             bot2 && bot2.getChip(this.chips.shift());
-            //console.log(`Bot${this.botNumber} giving chip-${highChip.value} to bot${bot2.botNumber}`);
+            // console.log(`Bot${this.botNumber} giving chip-${highChip.value} to bot${bot2.botNumber}`);
         }
     }
 }
