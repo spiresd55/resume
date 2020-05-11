@@ -11,8 +11,9 @@ const calculateOriginalPath = (startingPosition: Coordinate, instructions) => {
 
     instructions.forEach((instruction) => {
         // Destructure the string
-        let [direction, distance] = instruction;
-        distance = parseInt(distance);
+        let [direction, ...distance] = instruction;
+        // I can improve this by having the instruction object payload sent: Payload: Instructions[{direction: string, distance:number}]
+        distance = parseInt(distance.join(""));
 
         if (isValidDirection(direction) && distance > 0) {
             const lastPosition = pathTraveled[pathTraveled.length - 1];
@@ -44,7 +45,6 @@ const calculateOriginalPath = (startingPosition: Coordinate, instructions) => {
         maxY = startingPosition.y;
 
     // Determine boundaries
-
     pathTraveled.forEach((p) => {
         minX = Math.min(minX, p.x);
         maxX = Math.max(maxX, p.x);
@@ -56,8 +56,7 @@ const calculateOriginalPath = (startingPosition: Coordinate, instructions) => {
 };
 
 const createCoordinatePlane = (pathDetails) => {
-    const {pathTraveled, minX, maxX, minY, maxY} = pathDetails;
-    console.log('coordinate plane', pathTraveled[0], pathTraveled[pathTraveled.length - 1]);
+    const {minX, maxX, minY, maxY} = pathDetails;
 
     // Create Empty Graph
     const coordinatePlane = new Graph();
@@ -120,11 +119,25 @@ const createCoordinatePlane = (pathDetails) => {
 };
 
 export const findShortestPath = (startingPosition: Coordinate, instructions: string[]) => {
+    // Calculate the original path based on instructions provided
     const originalPathDetails = calculateOriginalPath(startingPosition, instructions);
+
+    // Create a coordinate plane graph object
     const coordinatePlane = createCoordinatePlane(originalPathDetails);
 
-    console.log('Here is the coordinate plane');
-    console.log(coordinatePlane);
+
     const dijkstra = new Dijkstra(coordinatePlane);
-    dijkstra.findShortestPath("(3,5)", "(4,8)");
+    // Find ending position
+    const endingPosition = originalPathDetails.pathTraveled[originalPathDetails.pathTraveled.length - 1];
+
+    // Find the shortest path
+    const results = dijkstra.findShortestPath(
+        `(${startingPosition.x},${startingPosition.y})`,
+        `(${endingPosition.x},${endingPosition.y})`
+    );
+
+    return {
+        ...results,
+        originalPathTraveled: originalPathDetails.pathTraveled,
+    }
 };

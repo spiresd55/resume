@@ -14,7 +14,8 @@
       ]
     },
     "types": [
-      "node"
+      "node",
+      "jest"
     ],
     "noImplicitAny": false,
     "allowSyntheticDefaultImports": true,

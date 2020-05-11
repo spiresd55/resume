@@ -39,10 +39,6 @@ export class Graph {
         return this.vertices[key] || undefined;
     }
 
-    contains(key) {
-        return this.vertices[key] ? true: false;
-    }
-
     addEdge(fromKey, toKey, weight){
         if (!this.vertices[fromKey]) {
             this.addVertex(fromKey);
@@ -55,7 +51,6 @@ export class Graph {
     }
 
 }
-
 
 class VertexDetails {
     vertex: string;
@@ -92,7 +87,6 @@ export class Dijkstra {
      */
     findShortestPath(start: string, end: string) {
         const visted = {};
-        const unvisited = [];
 
         // Create initial vertex details table
         Object.keys(this.graph.vertices).forEach((vertex: string, index: number) => {
@@ -104,31 +98,21 @@ export class Dijkstra {
         });
 
         // Create a min priority queue
-        // const priorityQueue: BinaryHeap<Vertex> = new BinaryHeap(BinaryHeapType.MIN, "weight");
         const priorityQueue: BinaryHeap<VertexDetails> = new BinaryHeap(BinaryHeapType.MIN, "shortestDistance");
-        // priorityQueue.buildHeap(this.graph.vertices[start].edges);
-       // priorityQueue.buildHeap(this.vertexDistanceTable);
         priorityQueue.insert(this.vertexDistanceTable[start]);
 
-        // console.log(this.vertexDistanceTable);
-        // console.log(start);
-       // console.log(this.graph.vertices[start].edges);
-        console.log(priorityQueue);
 
         while(!priorityQueue.isEmpty()) {
             // Delete the node from the priority queue
             const node = priorityQueue.del();
 
-            // console.log(node);
-
             // If the node is not visited
             if(!visted[node.vertex]) {
                 // Visit the edges
                 this.graph.getVertice(node.vertex).edges.forEach((edge) => {
-                    console.log("info", node.shortestDistance, edge.weight);
                     const currentDistance = node.shortestDistance + edge.weight;
 
-                    console.log("currentDistance", currentDistance);
+                    // If the new distance is less than the distance in the table, update it and insert that node in the queue
                     if (currentDistance < this.vertexDistanceTable[edge.key].shortestDistance) {
                         this.vertexDistanceTable[edge.key].shortestDistance = currentDistance;
                         this.vertexDistanceTable[edge.key].previous = node.vertex;
@@ -142,12 +126,16 @@ export class Dijkstra {
             visted[node.vertex] = true;
         }
 
+        // Now the shortest path can calculated
+        let nodePointer = this.vertexDistanceTable[end];
+        const pathInfo = {shortestDistance: nodePointer.shortestDistance, shortestPath: [], pathTable: this.vertexDistanceTable};
 
-        console.log("visted");
-        console.log(visted);
+        while(nodePointer && nodePointer.vertex !== start) {
+            pathInfo.shortestPath.unshift(nodePointer.vertex);
+            nodePointer = this.vertexDistanceTable[nodePointer.previous];
+        }
 
-        console.log(this.vertexDistanceTable);
-
+        return pathInfo;
     }
 }
 

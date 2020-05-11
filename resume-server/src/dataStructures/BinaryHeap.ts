@@ -3,7 +3,7 @@ export enum BinaryHeapType {
     MAX = "max"
 }
 
-export class BinaryHeap<T> {
+export class BinaryHeap<T> { // Binary Heap requires generics
     items: any;
     type: BinaryHeapType;
     objectProperty: string;
@@ -15,11 +15,11 @@ export class BinaryHeap<T> {
     }
 
     length() {
-        return this.items.length - 1;
+        return this.items.length - 1; // Return the length of the heap
     }
 
     insert(node) {
-        this.items.push(node);
+        this.items.push(node); // At new node to end up heap, and perculate up
         this.percolateUp();
     }
 
@@ -44,7 +44,6 @@ export class BinaryHeap<T> {
     }
 
     buildHeap(list: T[]) {
-        console.log("building heap", list);
         // This function currently doesn't support existing lists
         if (this.length() > 1) {
             return;
@@ -59,9 +58,6 @@ export class BinaryHeap<T> {
     }
 
     private shouldSwap(node: T, node2: T) {
-        console.log("shouldSwap");
-        console.log(node);
-        console.log(node2);
         if(this.type === BinaryHeapType.MIN) {
             if(node[this.objectProperty] < node2[this.objectProperty]) {
                 return true;
@@ -90,7 +86,6 @@ export class BinaryHeap<T> {
 
     private percolateDown(index) {
         let i = index;
-        console.log("pd", i);
         while (i * 2 <= this.length()) {
             const mc = this.minChild(i);
 
