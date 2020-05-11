@@ -1,10 +1,10 @@
 import React, {FunctionComponent} from "react";
 import classes from "./Grid.module.scss";
-import {AlignSelf, GridTypes} from "./GridTypes";
+import {AlignSelf, GridWidth} from "./GridTypes";
 
 const DEFAULT_PROPS = {
     className: "",
-    xs: (12 as GridTypes),
+    xs: (12 as GridWidth),
     order: 0,
     alignSelf: AlignSelf.Auto,
 };
@@ -20,7 +20,7 @@ const DEFAULT_PROPS = {
  * @param {number} xl - grid width at extra large breakpoint (1-12)
  * @returns {*}
  */
-const generateGridClasses = (xs: GridTypes, sm: GridTypes, md: GridTypes, lg: GridTypes, xl: GridTypes) => {
+const generateGridClasses = (xs: GridWidth, sm: GridWidth, md: GridWidth, lg: GridWidth, xl: GridWidth) => {
     const breakpoints = [
         { breakpoint: "xs", val: xs },
         { breakpoint: "sm", val: sm },
@@ -61,11 +61,11 @@ const generateGridClasses = (xs: GridTypes, sm: GridTypes, md: GridTypes, lg: Gr
  * @constructor
  */
 const generateOffsetClasses = (
-    offsetXs: GridTypes,
-    offsetSm: GridTypes,
-    offsetMd: GridTypes,
-    offsetLg: GridTypes,
-    offsetXl: GridTypes
+    offsetXs: GridWidth,
+    offsetSm: GridWidth,
+    offsetMd: GridWidth,
+    offsetLg: GridWidth,
+    offsetXl: GridWidth
 ) => {
     const breakpoints = [
         { breakpoint: "xs", val: offsetXs },
@@ -117,16 +117,16 @@ const generateOffsetClasses = (
  * @constructor
  */
 interface GridItemProps {
-    xs?: GridTypes,
-    sm?: GridTypes,
-    md?: GridTypes,
-    lg?: GridTypes,
-    xl?: GridTypes,
-    offsetXs?: GridTypes,
-    offsetSm?: GridTypes,
-    offsetMd?: GridTypes,
-    offsetLg?: GridTypes,
-    offsetXl?: GridTypes,
+    xs?: GridWidth,
+    sm?: GridWidth,
+    md?: GridWidth,
+    lg?: GridWidth,
+    xl?: GridWidth,
+    offsetXs?: GridWidth,
+    offsetSm?: GridWidth,
+    offsetMd?: GridWidth,
+    offsetLg?: GridWidth,
+    offsetXl?: GridWidth,
     children: any,
     className?: string,
     id?: string,
